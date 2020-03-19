@@ -40,14 +40,15 @@ var now = Calendar.Now(TimeZones.Sweden);
 
 This is useful if you just want a date without considering time or conversions.
 
-This means if you send in "2020-03-31" you will always get a DateTime with Kind set to unspecified and the value being 2020-03-31, regarrdless of which time zone the code runs in.
+This means if you send in "2020-03-31" you will always get a DateTime with Kind set to unspecified and the value being 2020-03-31, regardless of which time zone the code runs in.
 
-Expected format is YYYY-MM-DD, any offset info or other info afterwards is ignored.
+Expected format is "YYYY-MM-DD", "YYYY-MM-DDThh:mm:ss" or "YYYY-MM-DD hh:mm:ss". Any offset info or other info afterwards is ignored.
 
 E.g.
 
 ```C#
 var date = Calendar.ParseLiteralDate("2020-03-31");
+var dateTime = Calendar.ParseLiteralDate("2020-03-31 01:20:55");
 ```
 
 ### Convert offset value to another time zone
