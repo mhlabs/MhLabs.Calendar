@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace MhLabs.Calendar
@@ -6,15 +7,10 @@ namespace MhLabs.Calendar
     public static class Calendar
     {
         private static readonly Regex _dateFormat = new Regex(@"^\d{4}-((0[1-9])|(1[012]))-((0[1-9]|[12]\d)|3[01])*");
-        private static readonly TimeZoneKeeper _timeZoneKeeper;
-        static Calendar()
-        {
-            _timeZoneKeeper = new TimeZoneKeeper();
-        }
 
         public static DateTime Now(string timeZone)
         {
-            var timeZoneInfo = _timeZoneKeeper[timeZone];
+            var timeZoneInfo = TimeZoneKeeper.GetTimeZone(timeZone);
             var result = TimeZoneInfo.ConvertTime(DateTime.UtcNow, timeZoneInfo);
 
             return result;
@@ -54,8 +50,16 @@ namespace MhLabs.Calendar
                 throw new ArgumentException($"Not a valid offset value: {dateTime}", nameof(dateTime));
             }
 
-            var result = TimeZoneInfo.ConvertTime(parsed, _timeZoneKeeper[destinationTimeZone]).DateTime;
-            return result;
+            var result = TimeZoneInfo.ConvertTime(parsed, TimeZoneKeeper.GetTimeZone(destinationTimeZone));
+            return result.DateTime;
+        }
+
+        public static int GetWeekOfYear(DateTime date)
+        {
+            var thursday = date.AddDays(3 - (((int)date.DayOfWeek + 6) % 7));
+            var week = 1 + ((thursday.DayOfYear - 1) / 7);
+
+            return week;
         }
     }
 }

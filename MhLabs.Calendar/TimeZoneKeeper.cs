@@ -1,35 +1,32 @@
+using System.Globalization;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TimeZoneConverter;
 
-[assembly: InternalsVisibleTo(nameof(MhLabs.Calendar) + ".Tests")]
 namespace MhLabs.Calendar
 {
-    public class TimeZoneKeeper
+    public static class TimeZoneKeeper
     {
-        internal static Dictionary<string, TimeZoneInfo> ConfiguredTimeZones { get; private set; }
+        private static readonly Dictionary<string, TimeZoneInfo> _configuredTimeZones = new Dictionary<string, TimeZoneInfo>();
 
         static TimeZoneKeeper()
         {
-            ConfiguredTimeZones = new Dictionary<string, TimeZoneInfo>
+            _configuredTimeZones = new Dictionary<string, TimeZoneInfo>
             {
                 { TimeZones.Sweden, TZConvert.GetTimeZoneInfo(TimeZones.Sweden)},
                 { TimeZones.Utc, TZConvert.GetTimeZoneInfo(TimeZones.Utc)}
             };
         }
 
-        public TimeZoneInfo this[string timeZone]
+        public static TimeZoneInfo GetTimeZone(string timeZone)
         {
-            get
+            if (_configuredTimeZones.ContainsKey(timeZone))
             {
-                if (ConfiguredTimeZones.ContainsKey(timeZone))
-                {
-                    return ConfiguredTimeZones[timeZone];
-                }
-
-                throw new ArgumentException($"TimeZone is not configured: {timeZone}", nameof(timeZone));
+                return _configuredTimeZones[timeZone];
             }
+
+            throw new ArgumentException($"TimeZone is not configured: {timeZone}", nameof(timeZone));
         }
     }
 }

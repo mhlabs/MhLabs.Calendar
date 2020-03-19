@@ -1,3 +1,4 @@
+using System.Globalization;
 using System;
 using FluentAssertions;
 using Xunit;
@@ -71,6 +72,19 @@ namespace MhLabs.Calendar.Tests
         {
             Assert.Throws<ArgumentException>(() => Calendar.ConvertFromOffset(input, TimeZones.Sweden));
 
+        }
+
+        [Theory]
+        [InlineData("2019-12-30", 1)]
+        [InlineData("2019-12-31", 1)]
+        [InlineData("2020-03-19", 12)]
+        [InlineData("2016-01-03", 53)]
+        public void Should_Return_Correct_Week_Number(string dateString, int exepectedWeekNmber)
+        {
+            var date = DateTime.Parse(dateString, CultureInfo.InvariantCulture, DateTimeStyles.None);
+            var week = Calendar.GetWeekOfYear(date);
+
+            week.Should().Be(exepectedWeekNmber);
         }
 
     }

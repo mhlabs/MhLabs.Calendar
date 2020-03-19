@@ -8,10 +8,8 @@ namespace MhLabs.Calendar.Tests
         [Fact]
         public void Should_Init_TimeZones()
         {
-            var tested = new TimeZoneKeeper();
-
-            var sweden = tested[TimeZones.Sweden];
-            var utc = tested[TimeZones.Utc];
+            var sweden = TimeZoneKeeper.GetTimeZone(TimeZones.Sweden);
+            var utc = TimeZoneKeeper.GetTimeZone(TimeZones.Utc);
 
             Assert.NotNull(sweden);
             Assert.NotNull(utc);
@@ -20,10 +18,7 @@ namespace MhLabs.Calendar.Tests
         [Fact]
         public void Should_Throw_On_Invalid_TimeZone()
         {
-            var tested = new TimeZoneKeeper();
-
-            Assert.Throws<ArgumentException>(() => tested["Åmål"]);
+            Assert.Throws<ArgumentException>(() => TimeZoneKeeper.GetTimeZone("Åmål"));
         }
-
     }
 }
