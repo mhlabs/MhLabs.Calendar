@@ -87,5 +87,35 @@ namespace MhLabs.Calendar.Tests
             week.Should().Be(exepectedWeekNmber);
         }
 
+        [Theory]
+        [InlineData("2020-03-12T01:30:00+00:00", TimeZones.Utc)]
+        [InlineData("2020-03-12T01:30:00-09:00", TimeZones.Sweden)]
+        [InlineData("2020-03-12T01:30:00+00:00", TimeZones.Sweden)]
+        [InlineData("2020-03-12T01:30:00+01:00", TimeZones.Sweden)]
+        public void Should_Convert_To_Round_Trip_Date(string dateString, string timeZone)
+        {
+            var date = Calendar.ParseAsLiteral(dateString);
+            var offset = timeZone == TimeZones.Utc ? "+00:00" : "+01:00";
+
+            var clientFormat = Calendar.ToRoundTripDate(date, timeZone);
+
+            clientFormat.Should().Be($"2020-03-12T00:00:00{offset}");
+        }
+
+        [Theory]
+        [InlineData("2020-03-12T05:45:36-11:00", TimeZones.Sweden)]
+        [InlineData("2020-03-12T05:45:36+01:00", TimeZones.Utc)]
+        [InlineData("2020-03-12T05:45:36+00:00", TimeZones.Utc)]
+        [InlineData("2020-03-12T05:45:36+01:00", TimeZones.Sweden)]
+        public void Should_Convert_To_Round_Trip_Date_Time(string dateString, string timeZone)
+        {
+            var date = Calendar.ParseAsLiteral(dateString);
+            var offset = timeZone == TimeZones.Utc ? "+00:00" : "+01:00";
+
+            var clientFormat = Calendar.ToRoundTripDateTime(date, timeZone);
+
+            clientFormat.Should().Be($"2020-03-12T05:45:36{offset}");
+        }
+
     }
 }

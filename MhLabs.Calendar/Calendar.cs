@@ -61,5 +61,33 @@ namespace MhLabs.Calendar
 
             return week;
         }
+
+        public static string ToRoundTripDate(DateTime date, string timeZone)
+        {
+            return ToClientFormat(date, "yyyy-MM-dd'T'00:00:00zzz", timeZone);
+        }
+
+        public static string ToRoundTripDateTime(DateTime dateTime, string timeZone)
+        {
+            return ToClientFormat(dateTime, "yyyy-MM-dd'T'HH:mm:sszzz", timeZone);
+        }
+
+        private static string ToClientFormat(DateTime dateTime, string format, string timeZone)
+        {
+            if (dateTime == DateTime.MinValue) return string.Empty;
+
+            var invariant = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day,
+                dateTime.Hour, dateTime.Minute, dateTime.Second,
+                DateTimeKind.Utc);
+
+            var zone = TimeZoneKeeper.GetTimeZone(timeZone);
+            var offsetSpan = zone.GetUtcOffset(invariant);
+
+            var offset = new DateTimeOffset(invariant.Ticks, offsetSpan);
+
+            var result = offset.ToString(format);
+            return result;
+        }
+
     }
 }
