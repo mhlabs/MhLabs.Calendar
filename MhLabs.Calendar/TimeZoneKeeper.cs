@@ -28,7 +28,7 @@ namespace MhLabs.Calendar
                     return ConfiguredTimeZones[timeZone];
                 }
 
-                throw new ArgumentException("TimeZone is not configured.", nameof(timeZone));
+                throw new ArgumentException($"TimeZone is not configured: {timeZone}", nameof(timeZone));
             }
         }
     }

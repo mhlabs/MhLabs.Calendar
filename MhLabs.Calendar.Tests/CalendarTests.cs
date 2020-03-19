@@ -48,5 +48,30 @@ namespace MhLabs.Calendar.Tests
 
         }
 
+        [Theory]
+        [InlineData("2020-03-24T23:00:00+00:00")]
+        [InlineData("2020-03-24T23:00:00Z")]
+        [InlineData("2020-03-25T00:00:00+01:00")]
+        public void Should_Convert_From_Offset(string input)
+        {
+            var date = Calendar.ConvertFromOffset(input, TimeZones.Sweden);
+
+            date.Kind.Should().Be(DateTimeKind.Unspecified);
+            date.Should().Be(new DateTime(2020, 3, 25));
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("2012")]
+        [InlineData("2012-00-00T25:12:12")]
+        [InlineData("2012-00-00T05:12:12+999:00:00")]
+        [InlineData("abc")]
+        public void Should_Throw_On_Invalid_Offset_Value(string input)
+        {
+            Assert.Throws<ArgumentException>(() => Calendar.ConvertFromOffset(input, TimeZones.Sweden));
+
+        }
+
     }
 }

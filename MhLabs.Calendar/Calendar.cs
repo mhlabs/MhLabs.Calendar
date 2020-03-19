@@ -20,21 +20,21 @@ namespace MhLabs.Calendar
             return result;
         }
 
-        public static DateTime ParseAsLiteral(string date)
+        public static DateTime ParseAsLiteral(string dateTime)
         {
-            if (string.IsNullOrWhiteSpace(date) || !_dateFormat.IsMatch(date))
+            if (string.IsNullOrWhiteSpace(dateTime) || !_dateFormat.IsMatch(dateTime))
             {
-                throw new ArgumentException("Not a valid date in YYYY-MM-DD format", nameof(date));
+                throw new ArgumentException($"Not a valid date in YYYY-MM-DD format: {dateTime}", nameof(dateTime));
             }
 
-            var year = date.Substring(0, 4);
-            var month = date.Substring(5, 2);
-            var day = date.Substring(8, 2);
+            var year = dateTime.Substring(0, 4);
+            var month = dateTime.Substring(5, 2);
+            var day = dateTime.Substring(8, 2);
             var hour = 0;
             var minute = 0;
             var second = 0;
 
-            if (date.Length >= 18 && TimeSpan.TryParse(date.Substring(11, 8), out var time))
+            if (dateTime.Length >= 18 && TimeSpan.TryParse(dateTime.Substring(11, 8), out var time))
             {
                 hour = time.Hours;
                 minute = time.Minutes;
@@ -47,5 +47,15 @@ namespace MhLabs.Calendar
             return result;
         }
 
+        public static DateTime ConvertFromOffset(string dateTime, string destinationTimeZone)
+        {
+            if (!DateTimeOffset.TryParse(dateTime, out var parsed))
+            {
+                throw new ArgumentException($"Not a valid offset value: {dateTime}", nameof(dateTime));
+            }
+
+            var result = TimeZoneInfo.ConvertTime(parsed, _timeZoneKeeper[destinationTimeZone]).DateTime;
+            return result;
+        }
     }
 }
