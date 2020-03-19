@@ -20,7 +20,7 @@ namespace MhLabs.Calendar
             return result;
         }
 
-        public static DateTime ParseLiteralDate(string date)
+        public static DateTime ParseAsLiteral(string date)
         {
             if (string.IsNullOrWhiteSpace(date) || !_dateFormat.IsMatch(date))
             {
@@ -30,8 +30,20 @@ namespace MhLabs.Calendar
             var year = date.Substring(0, 4);
             var month = date.Substring(5, 2);
             var day = date.Substring(8, 2);
+            var hour = 0;
+            var minute = 0;
+            var second = 0;
 
-            var result = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day), 0, 0, 0, DateTimeKind.Unspecified);
+            if (date.Length >= 18 && TimeSpan.TryParse(date.Substring(11, 8), out var time))
+            {
+                hour = time.Hours;
+                minute = time.Minutes;
+                second = time.Seconds;
+            }
+
+            var result = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day),
+                hour, minute, second, DateTimeKind.Unspecified);
+
             return result;
         }
 
