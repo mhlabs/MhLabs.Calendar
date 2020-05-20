@@ -17,7 +17,7 @@ var now = Calendar.Now(TimeZones.Sweden);
 E.g. if you have a DateTime value for the local time where your users are but run the code in Ireland you want to make sure the DateTime value is not assumed to be UTC. (Of course, if the value includes offset info, use DateTimeOffset.Parse instead.)
 
 ```C#
-var date = Calendar.ParseLiteralDate("2020-03-31");
+var date = Calendar.ParseAsLiteral("2020-03-31");
 ```
 
 ### Format DateTime in round-trip format
@@ -47,8 +47,8 @@ Expected format is "YYYY-MM-DD", "YYYY-MM-DDThh:mm:ss" or "YYYY-MM-DD hh:mm:ss".
 E.g.
 
 ```C#
-var date = Calendar.ParseLiteralDate("2020-03-31");
-var dateTime = Calendar.ParseLiteralDate("2020-03-31 01:20:55");
+var date = Calendar.ParseAsLiteral("2020-03-31");
+var dateTime = Calendar.ParseAsLiteral("2020-03-31 01:20:55");
 ```
 
 ### Convert offset value to another time zone
