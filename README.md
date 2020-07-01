@@ -90,3 +90,12 @@ var dateTime = new DateTime(2020, 03, 12, 5, 45, 36);
 var clientFormat = Calendar.ToRoundTripDateTime(dateTime, TimeZones.Sweden);
 // -> 2020-03-12T05:45:36+01:00
 ```
+
+### Convert to universal time
+
+Useful when you have a swedish datetime in the format of *yyyy-MM-dd HH:mm:ss* and want to convert it to UTC
+```C#
+var dateTime = "2020-06-30 15:35:00";
+var clientFormat = Calendar.ConvertToUniversalTime(dateTime, TimeZones.Sweden);
+// -> 2020-03-12 13:35:00
+```

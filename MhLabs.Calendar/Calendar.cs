@@ -89,5 +89,28 @@ namespace MhLabs.Calendar
             return result;
         }
 
+        /// <summary>
+        /// <para>Convert dateTime string to UTC using specified time zone</para>
+        /// <para>The following example will convert Swedish datetime: 2020-06-30 15:35 to Universal datetime: 2020-06-30 13:35</para>
+        /// <para></para>
+        /// <code>
+        ///   Calendar.ConvertToUniversalTime("2020-06-30 15:35", TimeZones.Sweden);
+        /// </code>
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <param name="timeZone"></param>
+        /// <example>Hello world: <code>var x = y;</code></example>
+        public static DateTime ConvertToUniversalTime(string dateTime, string timeZone)
+        {
+            var parsedDateTime = ParseAsLiteral(dateTime);
+            var clientFormat = ToRoundTripDateTime(parsedDateTime, timeZone);
+
+            if (!DateTime.TryParse(clientFormat, out DateTime result))
+            {
+                throw new ArgumentException($"Not a valid dateTime value: {dateTime}", nameof(dateTime));
+            }
+
+            return result.ToUniversalTime();
+        }
     }
 }
