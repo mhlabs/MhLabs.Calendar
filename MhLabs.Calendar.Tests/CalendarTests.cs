@@ -121,13 +121,14 @@ namespace MhLabs.Calendar.Tests
         [Theory]
         [InlineData("2020-06-30 15:35:00", TimeZones.Sweden, "2020-06-30T13:35:00+00:00")]
         [InlineData("2020-06-30 15:35:00", TimeZones.Utc, "2020-06-30T15:35:00+00:00")]
+        [InlineData("2020-06-30T15:35:00+02:00", TimeZones.Sweden, "2020-06-30T13:35:00+00:00")]
         public void Should_Convert_To_UniversalTime(string dateTime, string timeZone, string expected)
         {
             // act
             var actual = Calendar.ConvertToUniversalTime(dateTime, timeZone);
 
             // assert
-            Assert.Equal(DateTime.Parse(expected).ToUniversalTime(), actual);
+            Assert.Equal(DateTimeOffset.Parse(expected).UtcDateTime, actual);
         }
 
 

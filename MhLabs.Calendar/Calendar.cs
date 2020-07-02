@@ -105,12 +105,12 @@ namespace MhLabs.Calendar
             var parsedDateTime = ParseAsLiteral(dateTime);
             var clientFormat = ToRoundTripDateTime(parsedDateTime, timeZone);
 
-            if (!DateTime.TryParse(clientFormat, out DateTime result))
+            if (!DateTimeOffset.TryParse(clientFormat, out DateTimeOffset result))
             {
                 throw new ArgumentException($"Not a valid dateTime value: {dateTime}", nameof(dateTime));
             }
 
-            return result.ToUniversalTime();
+            return result.UtcDateTime;
         }
     }
 }
