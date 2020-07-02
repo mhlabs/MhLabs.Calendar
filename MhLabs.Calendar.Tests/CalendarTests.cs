@@ -117,5 +117,29 @@ namespace MhLabs.Calendar.Tests
             clientFormat.Should().Be($"2020-03-12T05:45:36{offset}");
         }
 
+
+        [Theory]
+        [InlineData("2020-06-30 15:35:00", TimeZones.Sweden, "2020-06-30T13:35:00+00:00")]
+        [InlineData("2020-06-30 15:35:00", TimeZones.Utc, "2020-06-30T15:35:00+00:00")]
+        [InlineData("2020-06-30T15:35:00+02:00", TimeZones.Sweden, "2020-06-30T13:35:00+00:00")]
+        public void Should_Convert_To_UniversalTime(string dateTime, string timeZone, string expected)
+        {
+            // act
+            var actual = Calendar.ConvertToUniversalTime(dateTime, timeZone);
+
+            // assert
+            Assert.Equal(DateTimeOffset.Parse(expected).UtcDateTime, actual);
+        }
+
+
+        [Fact]
+        public void ConvertToUniversalTime_Should_Throw_An_Error_When_An_Invalid_DateTime_Is_Used()
+        {
+            // arrange
+            var invalidDateTime = "2000";
+
+            // act & assert
+            Assert.ThrowsAny<ArgumentException>(() => Calendar.ConvertToUniversalTime(invalidDateTime, TimeZones.Sweden));
+        }
     }
 }
