@@ -26,21 +26,28 @@ namespace MhLabs.Calendar
             var year = dateTime.Substring(0, 4);
             var month = dateTime.Substring(5, 2);
             var day = dateTime.Substring(8, 2);
-            var hour = 0;
-            var minute = 0;
-            var second = 0;
 
-            if (dateTime.Length >= 18 && TimeSpan.TryParse(dateTime.Substring(11, 8), out var time))
-            {
-                hour = time.Hours;
-                minute = time.Minutes;
-                second = time.Seconds;
-            }
+            var (hour, minute, second) = ExtractTime(dateTime);
 
             var result = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day),
                 hour, minute, second, DateTimeKind.Unspecified);
 
             return result;
+        }
+
+        private static (int hour, int minute, int second) ExtractTime(string dateTime)
+        {
+            if (dateTime.Length >= 18 && TimeSpan.TryParse(dateTime.Substring(11, 8), out TimeSpan time))
+            {
+                return (time.Hours, time.Minutes, time.Seconds);
+            }
+
+            if (dateTime.Length >= 15 && TimeSpan.TryParse(dateTime.Substring(11, 5), out time))
+            {
+                return (time.Hours, time.Minutes, time.Seconds);
+            }
+
+            return (0, 0, 0);
         }
 
         public static DateTime ConvertFromOffset(string dateTime, string destinationTimeZone)

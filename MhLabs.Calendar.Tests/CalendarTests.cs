@@ -38,6 +38,17 @@ namespace MhLabs.Calendar.Tests
         }
 
         [Theory]
+        [InlineData("2020-01-01 19:00", 19)]
+        [InlineData("2020-01-01 00:00", 0)]
+        public void Should_Parse_Literal_With_Time_But_No_Seconds(string input, int expectedHour)
+        {
+            var date = Calendar.ParseAsLiteral(input);
+
+            date.Kind.Should().Be(DateTimeKind.Unspecified);
+            date.Should().Be(new DateTime(2020, 1, 1, expectedHour, 0, 0));
+        }
+
+        [Theory]
         [InlineData("")]
         [InlineData(null)]
         [InlineData("2012")]

@@ -42,7 +42,7 @@ This is useful if you just want a date without considering time or conversions.
 
 This means if you send in "2020-03-31" you will always get a DateTime with Kind set to unspecified and the value being 2020-03-31, regardless of which time zone the code runs in.
 
-Expected format is "YYYY-MM-DD", "YYYY-MM-DDThh:mm:ss" or "YYYY-MM-DD hh:mm:ss". Any offset info or other info afterwards is ignored.
+Expected format is "YYYY-MM-DD", "YYYY-MM-DDThh:mm:ss", "YYYY-MM-DD hh:mm:ss" or YYYY-MM-DD hh:mm. Any offset info or other info afterwards is ignored.
 
 E.g.
 
@@ -93,7 +93,8 @@ var clientFormat = Calendar.ToRoundTripDateTime(dateTime, TimeZones.Sweden);
 
 ### Convert to universal time
 
-Useful when you have a swedish datetime in the format of *yyyy-MM-dd HH:mm:ss* and want to convert it to UTC
+Useful when you have a swedish datetime in the format of _yyyy-MM-dd HH:mm:ss_ and want to convert it to UTC
+
 ```C#
 var dateTime = "2020-06-30 15:35:00";
 var clientFormat = Calendar.ConvertToUniversalTime(dateTime, TimeZones.Sweden);
